@@ -9,11 +9,11 @@ window.renderStatistics = function (ctx, names, times) {
   ctx.font = '16px PT Mono';
   ctx.fillText('Ура вы победили!', 150, 40);
   ctx.fillText('Список результатов:', 150, 60);
-  var getMaxTime = function(times) {
-    var maxTime = times[0];
-    for (var i = 0; i < times.length; i++) {
-      if (maxTime < times[i]) {
-        maxTime = times[i];
+  var getMaxTime = function (playersTimes) {
+    var maxTime = playersTimes[0];
+    for (var i = 0; i < playersTimes.length; i++) {
+      if (maxTime < playersTimes[i]) {
+        maxTime = playersTimes[i];
       }
     }
     return maxTime;
@@ -22,8 +22,8 @@ window.renderStatistics = function (ctx, names, times) {
   var HISTOGRAMS_WIDTH = 40;
   var HISTOGRAMS_MAX_HEIGHT = 150;
   var HISTOGRAMS_MARGIN = 50;
-  var createHistogram = function(width, margin, maxHeight, maxTime, playerTime, playerName, playerNumber) {
-    var histogramHeight = Math.round(playerTime * HISTOGRAMS_MAX_HEIGHT / maxTime);
+  var createHistogram = function (width, margin, maxHeight, maxPlayerTime, playerTime, playerName, playerNumber) {
+    var histogramHeight = Math.round(playerTime * HISTOGRAMS_MAX_HEIGHT / maxPlayerTime);
     var histogramX = 150 + (HISTOGRAMS_WIDTH + HISTOGRAMS_MARGIN) * playerNumber;
     var histogramY = 90 + (HISTOGRAMS_MAX_HEIGHT - histogramHeight);
     var histogramColor = 'rgba(0, 0, ' + Math.round(Math.random() * 255) + ', 1)';
