@@ -9,22 +9,32 @@ window.renderStatistics = function (ctx, names, times) {
   ctx.font = '16px PT Mono';
   ctx.fillText('Ура вы победили!', 150, 40);
   ctx.fillText('Список результатов:', 150, 60);
-  var maxTime = times[0];
-  for (var i = 0; i < times.length; i++) {
-    if (maxTime < times[i]) {
-      maxTime = times[i];
+  var getMaxTime = function(times) {
+    var maxTime = times[0];
+    for (var i = 0; i < times.length; i++) {
+      if (maxTime < times[i]) {
+        maxTime = times[i];
+      }
     }
-  }
+    return maxTime;
+  };
+  var maxTime = getMaxTime(times);
   var HISTOGRAMS_WIDTH = 40;
   var HISTOGRAMS_MAX_HEIGHT = 150;
   var HISTOGRAMS_MARGIN = 50;
-  for (i = 0; i < times.length; i++) {
-    var histogramHeight = Math.round(times[i] * HISTOGRAMS_MAX_HEIGHT / maxTime);
-    var histogramX = 150 + (HISTOGRAMS_WIDTH + HISTOGRAMS_MARGIN) * i;
+  var createHistogram = function(width, margin, maxHeight, maxTime, playerTime, playerName, playerNumber) {
+    var histogramHeight = Math.round(playerTime * HISTOGRAMS_MAX_HEIGHT / maxTime);
+    var histogramX = 150 + (HISTOGRAMS_WIDTH + HISTOGRAMS_MARGIN) * playerNumber;
     var histogramY = 90 + (HISTOGRAMS_MAX_HEIGHT - histogramHeight);
-    var histogramColor = 'rgba(0, 0, ' + (names[i] === 'Вы' ? 255 : Math.round(Math.random() * 255)) + ', 1)';
+    var histogramColor = 'rgba(0, 0, ' + Math.round(Math.random() * 255) + ', 1)';
+    if (playerName === 'Вы') {
+      histogramColor = 'rgba(255, 0, 0, 1)';
+    }
     ctx.fillStyle = histogramColor;
     ctx.fillRect(histogramX, histogramY, HISTOGRAMS_WIDTH, histogramHeight);
-    ctx.fillText(names[i], histogramX, 270);
+    ctx.fillText(playerName, histogramX, 270);
+  };
+  for (var i = 0; i < times.length; i++) {
+    createHistogram(HISTOGRAMS_WIDTH, HISTOGRAMS_MARGIN, HISTOGRAMS_MAX_HEIGHT, maxTime, times[i], names[i], i);
   }
 };
